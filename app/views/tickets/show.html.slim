@@ -63,17 +63,18 @@
             .form-group
               label.col-xs-2.text-right Link Github
               .col-xs-10.border-bottom-1px
-                = 'link github'
+                = @ticket.pull_url
 
             .form-group
               label.col-xs-2.text-right Github Status
               .col-xs-10.border-bottom-1px
-                = 'github status'
+                - pull_data = @ticket.get_pull_data
+                = pull_data[0]
 
             .form-group
               label.col-xs-2.text-right Github Comments
               .col-xs-10.border-bottom-1px
-                = 'github comments'
+                = link_to 'ver comentarios', pull_data[1]
 
             .form-group
               label.col-xs-2.text-right Tags

@@ -139,6 +139,14 @@ class Ticket < ActiveRecord::Base
     self.save
   end
 
+  def get_pull_data
+    data = []
+    uri = URI(pull_url)
+    response = Net::HTTP.get(uri)
+    json = JSON.parse(response)
+    data = [json['state'], json['comments_url']]
+  end
+
   def self.search(search)
     data = self.joins(:company, :created_by)
     if search
