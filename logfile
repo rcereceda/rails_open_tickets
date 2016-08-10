@@ -24,3 +24,13 @@ LOG:  database system was shut down at 2016-08-09 22:01:46 CLT
 LOG:  MultiXact member wraparound protections are now enabled
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2016-08-10 10:36:58 CLT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  cached plan must not change result type
+STATEMENT:  SELECT  "tickets".* FROM "tickets" WHERE "tickets"."id" = $1 LIMIT 1

@@ -111,6 +111,10 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    dotenv (2.1.1)
+    dotenv-rails (2.1.1)
+      dotenv (= 2.1.1)
+      railties (>= 4.0, < 5.1)
     erubis (2.7.0)
     execjs (2.6.0)
     factory_girl (4.7.0)
@@ -294,6 +298,7 @@ DEPENDENCIES
   daemons
   delayed_job_active_record
   devise
+  dotenv-rails
   factory_girl_rails
   fancybox2-rails
   formtastic

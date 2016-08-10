@@ -26,6 +26,7 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 
 gem 'octokit', '~> 4.0'
+gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'

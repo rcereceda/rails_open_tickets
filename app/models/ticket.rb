@@ -1,6 +1,5 @@
 class Ticket < ActiveRecord::Base
   require 'net/http'
-  require "open-uri"
 
   belongs_to :notified_by, class_name: User
   belongs_to :created_by, class_name: User
@@ -17,7 +16,8 @@ class Ticket < ActiveRecord::Base
 
   after_create :create_pull_request
 
-  after_save :http_request
+  #after_save :pull_request
+  #after_save :create_pull_request
 
   attr_accessor :new_state
   attr_accessor :action_user
@@ -115,6 +115,10 @@ class Ticket < ActiveRecord::Base
 
   def create_pull_request
     git = company.get_git
+    system 'mkdir', '-p', "repos/#{company_name}/issue"
+    FileUtils.touch "repos/#{company_name}/#{branch_name}"
+    git.add("#{branch_name}")
+    git.commit("tracking repos #{branch_name}")
     # TODO: Use develop branch instead of master as base
     # creates branch
     branch = git.branch(branch_name)
@@ -122,25 +126,20 @@ class Ticket < ActiveRecord::Base
     # push branch to origin
     git.push('origin', branch_name)
     # pull request
+    pull_request
 
     return true
   end
 
-  def http_request
-    puts "REPOSITORY ------> #{company.repository}"
-    url = URI.parse(company.repository)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) { |http|
-      http.request(req)
-    }
-    puts res.body
-
-    # @data = URI.parse(company.repository).read
-    # puts @data
+  def pull_request
+    # create pull request
+    client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASSWORD'])
+    request = client.create_pull_request("rcereceda/rails_open_tickets", "master", branch_name, "Pull Request Example", "Pull Request body")
+    self.pull_url = request.url
+    self.save
   end
 
   def self.search(search)
-    #data = self.joins("left outer join companies on tickets.company_id = companies.id")
     data = self.joins(:company, :created_by)
     if search
       data.where("companies.name LIKE ? OR users.email LIKE ? OR aasm_state LIKE ?", "%#{search}%", "%#{search}%", "%#{search}%")
