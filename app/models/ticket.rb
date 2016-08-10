@@ -1,4 +1,7 @@
 class Ticket < ActiveRecord::Base
+  require 'net/http'
+  require "open-uri"
+
   belongs_to :notified_by, class_name: User
   belongs_to :created_by, class_name: User
   belongs_to :issue_type
@@ -13,6 +16,9 @@ class Ticket < ActiveRecord::Base
   has_many :tags, through: :tickets_tags
 
   after_create :create_pull_request
+
+  after_save :http_request
+
   attr_accessor :new_state
   attr_accessor :action_user
 
@@ -112,9 +118,34 @@ class Ticket < ActiveRecord::Base
     # TODO: Use develop branch instead of master as base
     # creates branch
     branch = git.branch(branch_name)
-    branch.create 
+    branch.create
     # push branch to origin
     git.push('origin', branch_name)
+    # pull request
+
     return true
+  end
+
+  def http_request
+    puts "REPOSITORY ------> #{company.repository}"
+    url = URI.parse(company.repository)
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) { |http|
+      http.request(req)
+    }
+    puts res.body
+
+    # @data = URI.parse(company.repository).read
+    # puts @data
+  end
+
+  def self.search(search)
+    #data = self.joins("left outer join companies on tickets.company_id = companies.id")
+    data = self.joins(:company, :created_by)
+    if search
+      data.where("companies.name LIKE ? OR users.email LIKE ? OR aasm_state LIKE ?", "%#{search}%", "%#{search}%", "%#{search}%")
+    else
+      all
+    end
   end
 end

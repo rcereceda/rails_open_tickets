@@ -25,6 +25,8 @@ gem 'groupdate'
 gem 'delayed_job_active_record'
 gem 'daemons'
 
+gem 'octokit', '~> 4.0'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 #
@@ -61,6 +63,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'railroady'
 end
 
 group :development do

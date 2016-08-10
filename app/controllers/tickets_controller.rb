@@ -3,10 +3,13 @@ class TicketsController < ApplicationController
   before_action :set_ticket, only: [:show, :edit, :update, :destroy, :change_status]
   before_action :can_change, only: [:edit, :update, :change_status]
 
+  helper_method :sort_column, :sort_direction
+
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.all
+    #@tickets = Ticket.all
+    @tickets = Ticket.search(params[:search]).order(sort_column + " " + sort_direction)
   end
 
   # GET /tickets/1
@@ -101,5 +104,13 @@ class TicketsController < ApplicationController
 
     def ticket_params_for_change
       params.require(:ticket).permit(:new_state, :issue_type_id).merge(action_user: current_user)
+    end
+
+    def sort_column
+      Ticket.column_names.include?(params[:sort]) ? params[:sort] : "title"
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
 end

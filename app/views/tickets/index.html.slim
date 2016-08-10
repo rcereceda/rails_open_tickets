@@ -1,17 +1,17 @@
 .row
-  .col-xs-12.well
+  .col-xs-9.well
     h1 Listing tickets
 
     table.table.table-hover
       thead
         tr
-          th Company
-          th Notified by
-          th Created by
-          th Aasm state
-          th Title
-          th Description
-          th Closed at
+          th = sortable 'company_name'
+          th = sortable 'notified_by_id'
+          th = sortable 'created_by_id'
+          th = sortable 'aasm_state'
+          th = sortable 'title'
+          th = sortable 'description'
+          th = sortable 'closed_at'
           th
           th
           th
@@ -33,3 +33,10 @@
     br
 
     = link_to 'New Ticket', new_ticket_path, class: 'btn btn-primary'
+
+  .col-xs-3
+    h3 Filter by company, creator or status
+    = form_tag tickets_path, :method => 'get'
+      = text_field_tag 'search'
+      = submit_tag 'Buscar'
+  
