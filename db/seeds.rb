@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Company.destroy_all
+
+companies = []
+
+1.times do |i|
+	Company.create(name: "company_#{i+1}", repository: "https://github.com/rcereceda/rails_open_tickets")
+end

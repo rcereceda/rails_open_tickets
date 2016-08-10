@@ -1,0 +1,36 @@
+LOG:  database system was shut down at 2016-08-08 23:21:20 CLT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  role "root" does not exist
+ERROR:  database "open_tickets_development" already exists
+STATEMENT:  CREATE DATABASE "open_tickets_development" ENCODING = 'unicode'
+ERROR:  column "company_name" does not exist at character 42
+STATEMENT:  SELECT "tickets".* FROM "tickets" WHERE (company_name LIKE '%ddd%')  ORDER BY title asc
+ERROR:  column "company_name" does not exist at character 42
+STATEMENT:  SELECT "tickets".* FROM "tickets" WHERE (company_name LIKE '%com%')  ORDER BY title asc
+ERROR:  missing FROM-clause entry for table "ticket" at character 64
+STATEMENT:  SELECT "tickets".* FROM "tickets" left outer join companies on ticket.company_id = company.id WHERE (companies.name LIKE '%%')  ORDER BY title asc
+ERROR:  missing FROM-clause entry for table "company" at character 85
+STATEMENT:  SELECT "tickets".* FROM "tickets" left outer join companies on tickets.company_id = company.id WHERE (companies.name LIKE '%%')  ORDER BY title asc
+ERROR:  syntax error at or near ")" at character 203
+STATEMENT:  SELECT "tickets".* FROM "tickets" INNER JOIN "companies" ON "companies"."id" = "tickets"."company_id" INNER JOIN "users" ON "users"."id" = "tickets"."created_by_id" WHERE (companies.name LIKE '%_1%' OR )  ORDER BY title asc
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2016-08-09 22:01:46 CLT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2016-08-10 10:36:58 CLT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  cached plan must not change result type
+STATEMENT:  SELECT  "tickets".* FROM "tickets" WHERE "tickets"."id" = $1 LIMIT 1

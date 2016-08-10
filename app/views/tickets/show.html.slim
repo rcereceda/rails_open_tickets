@@ -28,7 +28,7 @@
                 = @ticket.company_name
 
             .form-group
-              label.col-xs-2.text-right Status:
+              label.col-xs-2.text-right Status
               .col-xs-10.border-bottom-1px
                 = @ticket.aasm_state
 
@@ -59,6 +59,22 @@
               label.col-xs-2.text-right Description
               .col-xs-10.border-bottom-1px
                 = @ticket.description
+
+            .form-group
+              label.col-xs-2.text-right Link Github
+              .col-xs-10.border-bottom-1px
+                = @ticket.pull_url
+
+            .form-group
+              label.col-xs-2.text-right Github Status
+              .col-xs-10.border-bottom-1px
+                - pull_data = @ticket.get_pull_data
+                = pull_data[0]
+
+            .form-group
+              label.col-xs-2.text-right Github Comments
+              .col-xs-10.border-bottom-1px
+                = link_to 'ver comentarios', pull_data[1]
 
             .form-group
               label.col-xs-2.text-right Tags

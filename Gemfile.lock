@@ -37,6 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     airbrussh (1.0.1)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (6.0.3)
@@ -110,6 +111,10 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    dotenv (2.1.1)
+    dotenv-rails (2.1.1)
+      dotenv (= 2.1.1)
+      railties (>= 4.0, < 5.1)
     erubis (2.7.0)
     execjs (2.6.0)
     factory_girl (4.7.0)
@@ -119,6 +124,8 @@ GEM
       railties (>= 3.0.0)
     fancybox2-rails (0.2.8)
       railties (>= 3.1.0, < 5.0)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
     formtastic (3.1.4)
       actionpack (>= 3.2.13)
     git (1.3.0)
@@ -148,16 +155,20 @@ GEM
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     multi_json (1.11.2)
+    multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.1.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    octokit (4.3.0)
+      sawyer (~> 0.7.0, >= 0.5.3)
     orm_adapter (0.5.0)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
+    railroady (1.5.1)
     rails (4.2.6)
       actionmailer (= 4.2.6)
       actionpack (= 4.2.6)
@@ -220,6 +231,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sawyer (0.7.0)
+      addressable (>= 2.3.5, < 2.5)
+      faraday (~> 0.8, < 0.10)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -284,6 +298,7 @@ DEPENDENCIES
   daemons
   delayed_job_active_record
   devise
+  dotenv-rails
   factory_girl_rails
   fancybox2-rails
   formtastic
@@ -292,7 +307,9 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mini_magick
+  octokit (~> 4.0)
   pg
+  railroady
   rails (= 4.2.6)
   react-rails (~> 1.6.0)
   rspec-rails

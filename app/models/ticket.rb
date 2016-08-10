@@ -1,4 +1,6 @@
 class Ticket < ActiveRecord::Base
+  require 'net/http'
+
   belongs_to :notified_by, class_name: User
   belongs_to :created_by, class_name: User
   belongs_to :issue_type
@@ -13,6 +15,10 @@ class Ticket < ActiveRecord::Base
   has_many :tags, through: :tickets_tags
 
   after_create :create_pull_request
+
+  #after_save :pull_request
+  #after_save :create_pull_request
+
   attr_accessor :new_state
   attr_accessor :action_user
 
@@ -109,12 +115,44 @@ class Ticket < ActiveRecord::Base
 
   def create_pull_request
     git = company.get_git
+    system 'mkdir', '-p', "repos/#{company_name}/issue"
+    FileUtils.touch "repos/#{company_name}/#{branch_name}"
+    git.add("#{branch_name}")
+    git.commit("tracking repos #{branch_name}")
     # TODO: Use develop branch instead of master as base
     # creates branch
     branch = git.branch(branch_name)
-    branch.create 
+    branch.create
     # push branch to origin
     git.push('origin', branch_name)
+    # pull request
+    pull_request
+
     return true
+  end
+
+  def pull_request
+    # create pull request
+    client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASSWORD'])
+    request = client.create_pull_request("rcereceda/rails_open_tickets", "master", branch_name, "Pull Request Example", "Pull Request body")
+    self.pull_url = request.url
+    self.save
+  end
+
+  def get_pull_data
+    data = []
+    uri = URI(pull_url)
+    response = Net::HTTP.get(uri)
+    json = JSON.parse(response)
+    data = [json['state'], json['comments_url']]
+  end
+
+  def self.search(search)
+    data = self.joins(:company, :created_by)
+    if search
+      data.where("companies.name LIKE ? OR users.email LIKE ? OR aasm_state LIKE ?", "%#{search}%", "%#{search}%", "%#{search}%")
+    else
+      all
+    end
   end
 end
